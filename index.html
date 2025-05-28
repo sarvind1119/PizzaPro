@@ -13,7 +13,11 @@
     h2 { color: #c62828; margin-top: 2rem; }
     ul { list-style: none; padding: 0; }
     li { background: #fff; margin-bottom: 0.5rem; padding: 1rem; border-radius: 6px; box-shadow: 0 0 4px rgba(0,0,0,0.1); }
-    a.order-btn { display: inline-block; margin-top: 0.5rem; background: #25D366; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: bold; }
+    button.add-btn { background: #388e3c; color: white; padding: 0.4rem 1rem; border: none; border-radius: 4px; cursor: pointer; margin-top: 0.5rem; }
+    .cart { background: #f1f1f1; padding: 1rem; border-radius: 6px; }
+    .cart h3 { margin-top: 0; }
+    .cart-items { margin-bottom: 1rem; }
+    .order-btn { display: inline-block; background: #25D366; color: white; padding: 0.6rem 1rem; text-decoration: none; border-radius: 4px; font-weight: bold; }
     footer { text-align: center; padding: 1rem; font-size: 0.9rem; color: #777; }
   </style>
 </head>
@@ -29,17 +33,16 @@
       <ul>
         <li>
           Margherita – ₹100/180/320<br />
-          <a class="order-btn" href="https://wa.me/918909561914?text=I%20would%20like%20to%20order%20a%20Margherita%20Pizza">Order on WhatsApp</a>
+          <button class="add-btn" onclick="addToCart('Margherita Pizza', 100)">Add to Cart</button>
         </li>
         <li>
           Fresh Veggietariana – ₹150/250/400<br />
-          <a class="order-btn" href="https://wa.me/918909561914?text=I%20would%20like%20to%20order%20a%20Fresh%20Veggietariana%20Pizza">Order on WhatsApp</a>
+          <button class="add-btn" onclick="addToCart('Fresh Veggietariana Pizza', 150)">Add to Cart</button>
         </li>
         <li>
           Achari Veg – ₹150/250/380<br />
-          <a class="order-btn" href="https://wa.me/918909561914?text=I%20would%20like%20to%20order%20an%20Achari%20Veg%20Pizza">Order on WhatsApp</a>
+          <button class="add-btn" onclick="addToCart('Achari Veg Pizza', 150)">Add to Cart</button>
         </li>
-        <!-- Add more items similarly -->
       </ul>
     </div>
 
@@ -48,24 +51,69 @@
       <ul>
         <li>
           Veg Momos (8 pcs) – ₹70<br />
-          <a class="order-btn" href="https://wa.me/918909561914?text=I%20want%20to%20order%20Veg%20Momos">Order on WhatsApp</a>
+          <button class="add-btn" onclick="addToCart('Veg Momos (8 pcs)', 70)">Add to Cart</button>
         </li>
         <li>
-          Corn Cheese Momos (8 pcs) – ₹100<br />
-          <a class="order-btn" href="https://wa.me/918909561914?text=I%20want%20to%20order%20Corn%20Cheese%20Momos">Order on WhatsApp</a>
+          Corn Cheese Momos – ₹100<br />
+          <button class="add-btn" onclick="addToCart('Corn Cheese Momos', 100)">Add to Cart</button>
         </li>
       </ul>
     </div>
 
     <div class="section">
-      <h2>Contact</h2>
-      <p>Call: 8273652898</p>
-      <p>Instagram: @Pizza_pr0</p>
+      <h2>Drinks</h2>
+      <ul>
+        <li>
+          Classic Mint Mojito – ₹60<br />
+          <button class="add-btn" onclick="addToCart('Classic Mint Mojito', 60)">Add to Cart</button>
+        </li>
+        <li>
+          Oreo Shake – ₹90<br />
+          <button class="add-btn" onclick="addToCart('Oreo Shake', 90)">Add to Cart</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section cart">
+      <h3>🛒 Your Cart</h3>
+      <div class="cart-items" id="cart-items">No items yet.</div>
+      <div id="cart-total"></div>
+      <a href="#" id="whatsapp-link" class="order-btn" target="_blank" style="display:none">Order on WhatsApp</a>
     </div>
   </div>
 
   <footer>
     &copy; 2025 Pizza Pro. Made with 🍕 and ❤️.
   </footer>
+
+  <script>
+    let cart = [];
+
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartDiv = document.getElementById('cart-items');
+      const totalDiv = document.getElementById('cart-total');
+      const link = document.getElementById('whatsapp-link');
+
+      if (cart.length === 0) {
+        cartDiv.innerHTML = 'No items yet.';
+        link.style.display = 'none';
+        totalDiv.innerHTML = '';
+        return;
+      }
+
+      cartDiv.innerHTML = cart.map(c => `• ${c.item} – ₹${c.price}`).join('<br>');
+      const total = cart.reduce((sum, i) => sum + i.price, 0);
+      totalDiv.innerHTML = `<strong>Total: ₹${total}</strong>`;
+
+      const orderText = encodeURIComponent(`Hi! I want to order:\n${cart.map(c => '- ' + c.item + ' – ₹' + c.price).join('\n')}\nTotal: ₹${total}`);
+      link.href = `https://wa.me/918909561914?text=${orderText}`;
+      link.style.display = 'inline-block';
+    }
+  </script>
 </body>
 </html>
