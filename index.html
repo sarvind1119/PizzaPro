@@ -46,7 +46,7 @@
 <body>
   <header>
     <h1>🍕 Pizza Pro</h1>
-    <p>Other pizzas are just doughing too much. 🔥</p>
+    <p>Hotter than your ex. Cheaper than therapy. 🔥</p>
   </header>
 
   <div class="container">
@@ -112,12 +112,14 @@
       <h3>🛒 Your Cart</h3>
       <div class="cart-items" id="cart-items">No items yet.</div>
       <div id="cart-total"></div>
-      <a href="#" id="whatsapp-link" class="order-btn" target="_blank" style="display:none">Send Order via WhatsApp 💬</a>
+      <a href="#" id="whatsapp-link" class="order-btn" target="_blank" style="display:none" onclick="playCheckoutSound()">Send Order via WhatsApp 💬</a>
       <button class="clear-btn" onclick="clearCart()">Clear Cart 🧹</button>
     </div>
   </div>
 
   <div id="toast">Item added to cart! 🛍️</div>
+  <audio id="ding-sound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
+  <audio id="checkout-sound" src="https://www.soundjay.com/button/sounds/button-4.mp3" preload="auto"></audio>
 
   <footer>
     &copy; 2025 Pizza Pro. Made with 🍕, ❤️ and memes.
@@ -130,6 +132,11 @@
       cart.push({ item, price });
       updateCart();
       showToast();
+      document.getElementById("ding-sound").play();
+    }
+
+    function playCheckoutSound() {
+      document.getElementById("checkout-sound").play();
     }
 
     function clearCart() {
@@ -154,7 +161,7 @@
       totalDiv.innerHTML = `<strong>Total: ₹${total}</strong>`;
 
       const orderText = encodeURIComponent(`Hi! I want to order:\n${cart.map(c => '- ' + c.item + ' – ₹' + c.price).join('\n')}\nTotal: ₹${total}`);
-      link.href = `https://wa.me/918273652898?text=${orderText}`;
+      link.href = `https://wa.me/918909561914?text=${orderText}`;
       link.style.display = 'inline-block';
     }
 
